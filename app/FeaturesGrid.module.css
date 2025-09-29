@@ -1,0 +1,15 @@
+.title {
+  font-size: 36px;
+  font-weight: 900;
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.description {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  padding-top: var(--mantine-spacing-xl);
+  padding-bottom: var(--mantine-spacing-xl);
+}
