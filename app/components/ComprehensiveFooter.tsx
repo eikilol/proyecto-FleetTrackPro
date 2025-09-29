@@ -136,17 +136,7 @@ export default function ComprehensiveFooter() {
               </Text>
             </Box>
             
-            <Box style={{ textAlign: 'right', flex: 1 }}>
-              <Text size="xs" c="dimmed" mb={2} fw={500}>
-                Mr Portfolio
-              </Text>
-              <Text size="xs" c="dimmed" mb={2} fs="italic">
-                Activar Windows
-              </Text>
-              <Text size="xs" c="dimmed">
-                Ve a Configuración para activar Windows.
-              </Text>
-            </Box>
+            
           </Group>
         </Container>
       </Container>
