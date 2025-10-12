@@ -29,14 +29,27 @@ export default function LoginPage() {
 
   return (
     <div style={{ position: "relative", minHeight: "100vh" }}>
-      <Button
-        variant="light"
-        color="blue"
-        style={{ position: "absolute", top: "20px", left: "20px" }}
-        onClick={() => router.push("/")}
-      >
-        ⬅ Volver al menú principal
-      </Button>
+    <Button
+  variant="filled"
+  color="blue"
+  radius="md"
+  style={{
+    backgroundColor: "#1d8ef2", // azul brillante
+    color: "white",
+    fontWeight: "bold",
+    borderRadius: "8px",
+    padding: "8px 20px",
+    position: "absolute",
+    top: "20px",
+    left: "20px",
+  }}
+  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#1479d6")} // hover
+  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#1d8ef2")}
+  onClick={() => router.push("/")}
+>
+  Volver al menú principal
+</Button>
+
 
       <Container size={420} py={80}>
         <Title order={2} ta="center" mb="md">

@@ -1,21 +1,17 @@
 'use client';
 
 import { AppShell, Box } from "@mantine/core";
-import Header from './components/Header';
+import Header from './components/HomePage';
 import Footer from './components/Footer';
-import HeroSection from './components/HeroSection';
-import FeaturesGrid from './components/FeaturesGrid';
-import RealTimeDashboard from './components/RealTimeDashboard';
-import ComprehensiveFooter from './components/ComprehensiveFooter';
 
-export default function HomePage() {
+export default function Home() {
   return (
     <AppShell 
       padding="md" 
       footer={{ height: 60 }}
       styles={{
         main: {
-          minHeight: 'calc(100vh - 120px)', // Ajusta para que el contenido ocupe el espacio disponible
+          minHeight: 'calc(100vh - 120px)',
         }
       }}
     >
@@ -23,19 +19,10 @@ export default function HomePage() {
         <Header />
       </AppShell.Header>
 
-      <AppShell.Main>
-        <Box style={{ flex: 1 }}>
-          <HeroSection />
-          <FeaturesGrid />
-          <RealTimeDashboard />
-        </Box>
-        <ComprehensiveFooter />
-      </AppShell.Main>
+      
       <AppShell.Footer h={60} style={{ padding: '10px' }}>
         <Footer />
       </AppShell.Footer>
-      
     </AppShell>
-    
   );
 }
