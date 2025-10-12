@@ -75,7 +75,7 @@ export default function LoginPage() {
             />
             <Group justify="space-between" mt="md" mb="xs">
               <Text size="sm" c="dimmed">
-                ¿No tienes cuenta? <a href="#">Regístrate</a>
+                ¿No tienes cuenta? <a href="#"  onClick={() => router.push('/register')}>Regístrate</a>
               </Text>
             </Group>
             <Button fullWidth mt="xl" type="submit">

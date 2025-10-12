@@ -93,7 +93,7 @@ export default function HomePage() {
           padding: '10px 24px',
             }}
   variant="filled"
- onClick={() => router.push('/login/login')}
+ onClick={() => router.push('/login ')}
 >
   Iniciar Sesión
 </Button>
