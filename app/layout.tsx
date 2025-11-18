@@ -12,11 +12,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body>
-        <MantineProvider>
-          {children}
-        </MantineProvider>
+    <html lang="es" suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        <MantineProvider>{children}</MantineProvider>
       </body>
     </html>
   );

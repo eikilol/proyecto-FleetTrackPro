@@ -1,115 +1,143 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Container,
-  Paper,
-  TextInput,
-  PasswordInput,
-  Button,
-  Title,
-  Radio,
-  Group,
-  Stack,
-} from "@mantine/core";
+import { supabase } from "@/supabase/client";
 import { useRouter } from "next/navigation";
+import { Button, TextInput, PasswordInput, Paper, Container, Title, Divider } from "@mantine/core";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rol, setRol] = useState("taxista");
+  const [nombre, setNombre] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
 
-    if (!nombre.trim() || !email.trim() || !password.trim()) {
-      alert("Por favor completa todos los campos");
-      return;
+    try {
+      // 1️⃣ CREAR EL USUARIO EN SUPABASE AUTH
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email: email.trim(),
+        password: password.trim(),
+        options: {
+          data: {
+            nombre: nombre.trim(),
+          }
+        }
+      });
+
+      if (signUpError) {
+        alert("❌ Error al registrar usuario: " + signUpError.message);
+        return;
+      }
+
+      const user = signUpData.user;
+             console.log("user", user)
+      if (!user) {
+        alert("⚠️ No se pudo crear el usuario.");
+        return;
+      }
+
+      // 2️⃣ INSERTAR PERFIL EN LA TABLA PROFILES
+      const { error: profileError } = await supabase.from("profiles").insert([
+        {
+          id: user.id,
+          nombre: nombre.trim(),
+          email: email.trim(),
+          rol: "usuario", // rol predeterminado
+        },
+      ]);
+
+      if (profileError) {
+        alert("❌ Error al crear perfil: " + profileError.message);
+        return;
+      }
+
+      alert("✅ Registro exitoso. Revisa tu correo para confirmar tu cuenta.");
+      router.push("/login");
+    } catch (error) {
+      console.error("Error durante el registro:", error);
+      alert("❌ Error inesperado durante el registro.");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    alert(`✅ Usuario registrado:
-Nombre: ${nombre}
-Email: ${email}
-Rol: ${rol}`);
+  // INICIO CON GOOGLE
+  const handleGoogleLogin = async () => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { 
+          redirectTo: `${window.location.origin}/auth/callback`,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          }
+        },
+      });
 
-    router.push("/"); // Vuelve al inicio
+      if (error) {
+        alert("❌ Error al iniciar sesión con Google: " + error.message);
+      }
+      // El resto del flujo se maneja en /auth/callback
+    } catch (error) {
+      console.error("Error con Google login:", error);
+      alert("❌ Error inesperado con Google.");
+    }
   };
 
   return (
-    <div style={{ position: "relative", minHeight: "100vh" }}>
-      <Button
-        variant="filled"
-        color="blue"
-        radius="md"
-        style={{
-          backgroundColor: "#1d8ef2",
-          color: "white",
-          fontWeight: "bold",
-          borderRadius: "8px",
-          padding: "8px 20px",
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-        }}
-        onClick={() => router.push("/")}
-      >
-        Volver al menú principal
-      </Button>
+    <Container size={420} py={80}>
+      <Title order={2} ta="center" mb="md">Crear Cuenta</Title>
 
-      <Container size={420} py={80}>
-        <Title order={2} ta="center" mb="md">
-          Registrarse
-        </Title>
+      <Paper withBorder shadow="md" p={30} radius="md">
+        <form onSubmit={handleRegister}>
+          <TextInput
+            label="Nombre"
+            placeholder="Tu nombre"
+            value={nombre}
+            type="nombre"
+            onChange={(e) => setNombre(e.currentTarget.value)}
+            required
+          />
 
-        <Paper withBorder shadow="md" p={30} radius="md">
-          <form onSubmit={handleSubmit}>
-            <Stack>
-              <TextInput
-                label="Nombre Completo"
-                placeholder="Juan Pérez"
-                value={nombre}
-                onChange={(e) => setNombre(e.currentTarget.value)}
-                required
-              />
-              <TextInput
-                label="Email"
-                placeholder="tu@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.currentTarget.value)}
-                required
-              />
-              <PasswordInput
-                label="Contraseña"
-                placeholder="******"
-                value={password}
-                onChange={(e) => setPassword(e.currentTarget.value)}
-                required
-              />
-              <Radio.Group value={rol} onChange={setRol}>
-                <Stack>
-                  <Radio value="taxista" label="Taxista" />
-                  <Radio value="administrador" label="Administrador" />
-                </Stack>
-              </Radio.Group>
+          <TextInput
+            label="Correo"
+            placeholder="tu@correo.com"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
+            required
+            mt="md"
+          />
 
-              <Button
-                type="submit"
-                fullWidth
-                mt="md"
-                style={{
-                  backgroundColor: "#1d8ef2",
-                  color: "white",
-                  fontWeight: "bold",
-                }}
-              >
-                Crear cuenta
-              </Button>
-            </Stack>
-          </form>
-        </Paper>
-      </Container>
-    </div>
+          <PasswordInput
+            label="Contraseña"
+            placeholder="******"
+            value={password}
+            onChange={(e) => setPassword(e.currentTarget.value)}
+            required
+            mt="md"
+          />
+
+          <Button fullWidth mt="xl" type="submit" loading={loading}>
+            Registrarse
+          </Button>
+        </form>
+
+        <Divider my="md" label="O" labelPosition="center" />
+
+        <Button
+          fullWidth
+          variant="outline"
+          onClick={handleGoogleLogin}
+        >
+          Registrarse con Google
+        </Button>
+      </Paper>
+    </Container>
   );
 }
