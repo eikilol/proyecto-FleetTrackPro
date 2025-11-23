@@ -162,7 +162,7 @@ export default function DashboardPage() {
             description="Agregar gastos"
             leftSection={<IconTrendingDown size={20} />}
             component="a"
-            href="/gastos/registrar"
+            href="/gasto/registrar"
           />
 
           <NavLink

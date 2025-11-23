@@ -52,7 +52,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             description="Agrega tus gastos del día"
             leftSection={<IconTrendingDown size={20} stroke={1.5} />}
             component="a"
-            href="/gastos/registrar"
+            href="/gasto/registrar"
           />
 
           <NavLink
