@@ -14,7 +14,6 @@ import {
   AppShell,
   NavLink,
   Burger,
-  useMantineTheme,
 } from "@mantine/core";
 import {
   IconTrendingUp,
@@ -36,7 +35,7 @@ type ActividadItem = {
 };
 
 export default function DashboardPage() {
-  const theme = useMantineTheme();
+  //const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure();
 
   // ESTADOS

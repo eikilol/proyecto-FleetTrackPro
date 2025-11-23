@@ -1,6 +1,6 @@
 'use client';
 
-import { AppShell, Box } from "@mantine/core";
+import { AppShell } from "@mantine/core";
 import Header from './components/HomePage';
 
 

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/supabase/client";
 
+
 // ⚠️ Aquí simulo datos, en un caso real vendrían de una base de datos
 const gananciasEjemplo = [
   { id: 1, valor: 50000 },
