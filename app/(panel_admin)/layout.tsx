@@ -1,12 +1,7 @@
 'use client';
 
-<<<<<<< HEAD
-import { AppShell, Burger, NavLink, Stack, Group, Title } from "@mantine/core";
-import { IconTrendingUp, IconTrendingDown,  IconDashboard } from "@tabler/icons-react";
-=======
 import { AppShell, Burger, NavLink, Stack, Group, Title, Button } from "@mantine/core";
 import { IconTrendingUp, IconTrendingDown, IconDashboard, IconLogout } from "@tabler/icons-react";
->>>>>>> 61831f6340999f7dba88afd0e5aacf1d4538cbec
 import { useDisclosure } from '@mantine/hooks';
 import { supabase } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
@@ -71,24 +66,24 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
           />
 
           <NavLink
-            label="crea vehiculos"
-            description=" vehiculos"
+            label="crear vehículos"
+            description="Vehículos"
             leftSection={<IconTrendingUp size={20} stroke={1.5} />}
             href="/vehiculos/crear"
             component="a"
           />
 
           <NavLink
-            label="asignar vehiculos "
-            description="asignar"
+            label="asignar vehículos"
+            description="Asignar"
             leftSection={<IconTrendingDown size={20} stroke={1.5} />}
             href="/vehiculos/asignar"
             component="a"
           />
           
           <NavLink
-            label="lista "
-            description="asignar"
+            label="lista"
+            description="Lista de vehículos"
             leftSection={<IconTrendingDown size={20} stroke={1.5} />}
             href="/vehiculos"
             component="a"
