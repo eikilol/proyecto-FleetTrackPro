@@ -1,11 +1,30 @@
 'use client';
 
+<<<<<<< HEAD
 import { AppShell, Burger, NavLink, Stack, Group, Title } from "@mantine/core";
 import { IconTrendingUp, IconTrendingDown,  IconDashboard } from "@tabler/icons-react";
+=======
+import { AppShell, Burger, NavLink, Stack, Group, Title, Button } from "@mantine/core";
+import { IconTrendingUp, IconTrendingDown, IconDashboard, IconLogout } from "@tabler/icons-react";
+>>>>>>> 61831f6340999f7dba88afd0e5aacf1d4538cbec
 import { useDisclosure } from '@mantine/hooks';
+import { supabase } from '@/supabase/client';
+import { useRouter } from 'next/navigation';
 
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      // Cerrar sesión en Supabase
+      await supabase.auth.signOut();
+      // Redirigir a la página de inicio
+      router.push('/');
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
 
   return (
     <AppShell
@@ -26,6 +45,17 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
               FleetTrackPro
             </Title>
           </Group>
+          
+          {/* Botón Salir a la derecha */}
+          <Button 
+            variant="light" 
+            color="red" 
+            leftSection={<IconLogout size={16} />}
+            onClick={handleLogout}
+            size="sm"
+          >
+            Salir
+          </Button>
         </Group>
       </AppShell.Header>
 
@@ -55,18 +85,14 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             href="/vehiculos/asignar"
             component="a"
           />
-         <NavLink
+          
+          <NavLink
             label="lista "
             description="asignar"
             leftSection={<IconTrendingDown size={20} stroke={1.5} />}
             href="/vehiculos"
             component="a"
           />
-             
-          
-         
-
-         
         </Stack>
       </AppShell.Navbar>
 
