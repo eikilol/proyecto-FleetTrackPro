@@ -2,23 +2,26 @@
 
 import { useState } from "react";
 import { supabase } from "@/supabase/client";
+
 import {
-  TextInput,
-  Button,
+  Container,
+  Paper,
   Title,
+  TextInput,
   Textarea,
+  Button,
   Select,
+  Group,
 } from "@mantine/core";
-import { DatePickerInput } from "@mantine/dates";
 import { useRouter } from "next/navigation";
 
 export default function RegistrarGasto() {
   const router = useRouter();
 
-  const [fecha, setFecha] = useState<Date | null>(null);
+  const [fecha, setFecha] = useState("");
   const [tipo, setTipo] = useState<string | null>(null);
-  const [valor, setValor] = useState<string>("");
-  const [comentario, setComentario] = useState<string>("");
+  const [valor, setValor] = useState("");
+  const [comentario, setComentario] = useState("");
 
   const [loading, setLoading] = useState(false);
 
@@ -33,11 +36,12 @@ export default function RegistrarGasto() {
     const user = (await supabase.auth.getUser()).data.user;
     if (!user) {
       alert("No se encontró usuario.");
+      setLoading(false);
       return;
     }
 
     const { error } = await supabase.from("gastos").insert({
-      fecha: fecha.toISOString().slice(0, 10),
+      fecha: fecha, // ya viene yyyy-mm-dd del input
       tipo,
       valor: Number(valor),
       comentario: comentario || null,
@@ -53,33 +57,29 @@ export default function RegistrarGasto() {
     }
 
     alert("Gasto registrado correctamente.");
-    router.push("/panel"); // o a la ruta que quieras
+    router.push("/gasto/registrar");
   }
 
   return (
-    <div className="w-full p-6 md:p-10">
-      <div className="bg-white p-6 rounded-xl shadow-md max-w-2xl mx-auto">
+    <Container size="sm" mt={40}>
+      <Title order={2} mb={20}>Nuevo Gasto o Evento</Title>
 
-        <Title order={2} className="mb-2 flex items-center gap-2">
-          Nuevo Gasto o Evento
-        </Title>
-        <p className="text-gray-500 mb-5">
-          Completa el formulario para registrar gastos o días especiales
-        </p>
+      <Paper shadow="xs" radius="md" p="lg">
 
         {/* Fecha */}
-        <DatePickerInput
-          label="Fecha *"
-          placeholder="Selecciona una fecha"
+        <TextInput
+          type="date"
+          label="Fecha "
+          placeholder="Selecciona la fecha"
           value={fecha}
-        onChange={(value) => setFecha(new Date(value || ''))}
-          className="mb-4"
+          onChange={(e) => setFecha(e.target.value)}
           required
+          mb="md"
         />
 
         {/* Tipo */}
         <Select
-          label="Tipo de gasto o evento *"
+          label="Tipo de gasto o evento "
           placeholder="Selecciona el tipo"
           value={tipo}
           onChange={setTipo}
@@ -90,39 +90,43 @@ export default function RegistrarGasto() {
             { value: "imprevisto", label: "Imprevisto" },
             { value: "otro", label: "Otro" },
           ]}
-          className="mb-4"
           required
+          mb="md"
         />
 
         {/* Valor */}
         <TextInput
+          type="number"
           label="Valor (COP)"
-          placeholder="$00,000"
+          placeholder="50000"
           value={valor}
           onChange={(e) => setValor(e.target.value)}
-          className="mb-4"
           required
+          mb="md"
         />
 
-        {/* Descripción */}
+        {/* Comentario */}
         <Textarea
           label="Descripción"
-          placeholder="Ej: llenado de tanque completo, cambio de aceite..."
+          placeholder="Ej: tanque lleno, cambio de aceite..."
           value={comentario}
           onChange={(e) => setComentario(e.target.value)}
-          className="mb-6"
+          autosize
+          mb="md"
         />
 
         {/* Botón */}
-        <Button
-          fullWidth
-          onClick={handleSubmit}
-          loading={loading}
-          className="bg-blue-600 text-white mt-2"
-        >
-          Guardar Registro
-        </Button>
-      </div>
-    </div>
+        <Group justify="flex-end">
+          <Button
+            loading={loading}
+            onClick={handleSubmit}
+            size="md"
+          >
+            Guardar Registro
+          </Button>
+        </Group>
+
+      </Paper>
+    </Container>
   );
 }

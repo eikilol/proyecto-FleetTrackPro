@@ -36,25 +36,35 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             label="Dashboard"
             description="Vista general"
             leftSection={<IconDashboard size={20} stroke={1.5} />}
-            href="/usuario"
+            href="/admin"
             component="a"
           />
 
           <NavLink
-            label="Registrar Ganancias"
-            description="Agrega tus ingresos "
+            label="crea vehiculos"
+            description=" vehiculos"
             leftSection={<IconTrendingUp size={20} stroke={1.5} />}
-            href="/ganancias/registrar"
+            href="/vehiculos/crear"
             component="a"
           />
 
           <NavLink
-            label="Registrar Gastos"
-            description="Agrega tus gastos "
+            label="asignar vehiculos "
+            description="asignar"
             leftSection={<IconTrendingDown size={20} stroke={1.5} />}
-            href="/gasto/registrar"
+            href="/vehiculos/asignar"
             component="a"
           />
+         <NavLink
+            label="lista "
+            description="asignar"
+            leftSection={<IconTrendingDown size={20} stroke={1.5} />}
+            href="/vehiculos"
+            component="a"
+          />
+             
+          
+         
 
          
         </Stack>

@@ -11,18 +11,15 @@ import {
   Group,
   Stack,
   Badge,
-  AppShell,
-  NavLink,
-  Burger,
 } from "@mantine/core";
+
 import {
   IconTrendingUp,
   IconTrendingDown,
   IconCalendar,
   IconActivity,
-  IconDashboard,
-  IconReport,
 } from "@tabler/icons-react";
+
 import { useDisclosure } from "@mantine/hooks";
 import { supabase } from "@/supabase/client";
 
@@ -35,7 +32,6 @@ type ActividadItem = {
 };
 
 export default function DashboardPage() {
-  //const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure();
 
   // ESTADOS
@@ -43,8 +39,6 @@ export default function DashboardPage() {
   const [gastosMes, setGastosMes] = useState(0);
   const [balance, setBalance] = useState(0);
   const [diasTrabajados, setDiasTrabajados] = useState(0);
-
-  // Lista de actividad tipada correctamente
   const [actividad, setActividad] = useState<ActividadItem[]>([]);
 
   useEffect(() => {
@@ -117,182 +111,124 @@ export default function DashboardPage() {
   }
 
   return (
-    <AppShell
-      header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: "sm",
-        collapsed: { mobile: !opened },
-      }}
-      padding="md"
-    >
-      {/* HEADER */}
-      <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
-          <Group>
-            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-            <Title order={3} style={{ color: "#228be6" }}>
-              FleetTrackPro
+   
+          <Container size="lg" py={10} px={5} style={{ width: "100%" }}>
+            <Title order={2} mb={10}>
+              Dashboard
             </Title>
-          </Group>
-        </Group>
-      </AppShell.Header>
 
-      {/* NAVBAR */}
-      <AppShell.Navbar p="md">
-        <Stack gap="xs">
-          <NavLink
-            label="Dashboard"
-            description="Vista general"
-            leftSection={<IconDashboard size={20} />}
-            component="a"
-            href="/usuario"
-          />
+            <Text size="lg" mb={30} style={{ color: "#868e96" }}>
+              Resumen de las actividades del mes
+            </Text>
 
-          <NavLink
-            label="Registrar Ganancias"
-            description="Agregar ingresos"
-            leftSection={<IconTrendingUp size={20} />}
-            component="a"
-            href="/ganancias/registrar"
-          />
+            {/* MÉTRICAS */}
+            <Grid gutter="lg" mb={40}>
+              <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
+                <Card shadow="sm" padding="lg" radius="md" withBorder>
+                  <Group justify="space-between" mb="xs">
+                    <Text fw={500}>Ganancias del Mes</Text>
+                    <IconTrendingUp size={20} color="green" />
+                  </Group>
+                  <Text size="xl" fw={700} style={{ color: "#40c057" }}>
+                    ${gananciasMes.toLocaleString()}
+                  </Text>
+                </Card>
+              </Grid.Col>
 
-          <NavLink
-            label="Registrar Gastos"
-            description="Agregar gastos"
-            leftSection={<IconTrendingDown size={20} />}
-            component="a"
-            href="/gasto/registrar"
-          />
+              <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
+                <Card shadow="sm" padding="lg" radius="md" withBorder>
+                  <Group justify="space-between" mb="xs">
+                    <Text fw={500}>Gastos del Mes</Text>
+                    <IconTrendingDown size={20} color="red" />
+                  </Group>
+                  <Text size="xl" fw={700} style={{ color: "#fa5252" }}>
+                    ${gastosMes.toLocaleString()}
+                  </Text>
+                </Card>
+              </Grid.Col>
 
-          <NavLink
-            label="Historial"
-            description="Todos los movimientos"
-            leftSection={<IconReport size={20} />}
-            component="a"
-            href="/historial"
-          />
-        </Stack>
-      </AppShell.Navbar>
+              <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
+                <Card shadow="sm" padding="lg" radius="md" withBorder>
+                  <Group justify="space-between" mb="xs">
+                    <Text fw={500}>Balance Neto</Text>
+                    <IconActivity size={20} color="blue" />
+                  </Group>
+                  <Text size="xl" fw={700} style={{ color: "#228be6" }}>
+                    ${balance.toLocaleString()}
+                  </Text>
+                </Card>
+              </Grid.Col>
 
-      {/* MAIN */}
-      <AppShell.Main>
-        <Container size="xl" py={20}>
-          <Title order={2} mb={20}>
-            Dashboard
-          </Title>
-          <Text size="lg" mb={30} style={{ color: "#868e96" }}>
-            Resumen de las actividades del mes
-          </Text>
+              <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
+                <Card shadow="sm" padding="lg" radius="md" withBorder>
+                  <Group justify="space-between" mb="xs">
+                    <Text fw={500}>Días Trabajados</Text>
+                    <IconCalendar size={20} color="orange" />
+                  </Group>
+                  <Text size="xl" fw={700} style={{ color: "#fd7e14" }}>
+                    {diasTrabajados}
+                  </Text>
+                </Card>
+              </Grid.Col>
+            </Grid>
 
-          {/* MÉTRICAS */}
-          <Grid gutter="lg" mb={40}>
-            {/* Ganancias */}
-            <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-              <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Group justify="space-between" mb="xs">
-                  <Text fw={500}>Ganancias del Mes</Text>
-                  <IconTrendingUp size={20} color="green" />
-                </Group>
-                <Text size="xl" fw={700} style={{ color: "#40c057" }}>
-                  ${gananciasMes.toLocaleString()}
-                </Text>
-              </Card>
-            </Grid.Col>
+            {/* SEPARADOR */}
+            <div
+              style={{
+                borderBottom: "1px solid #dee2e6",
+                marginBottom: 30,
+              }}
+            />
 
-            {/* Gastos */}
-            <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-              <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Group justify="space-between" mb="xs">
-                  <Text fw={500}>Gastos del Mes</Text>
-                  <IconTrendingDown size={20} color="red" />
-                </Group>
-                <Text size="xl" fw={700} style={{ color: "#fa5252" }}>
-                  ${gastosMes.toLocaleString()}
-                </Text>
-              </Card>
-            </Grid.Col>
+            <Title order={3} mb={20}>
+              Actividad Reciente
+            </Title>
 
-            {/* Balance */}
-            <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-              <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Group justify="space-between" mb="xs">
-                  <Text fw={500}>Balance Neto</Text>
-                  <IconActivity size={20} color="blue" />
-                </Group>
-                <Text size="xl" fw={700} style={{ color: "#228be6" }}>
-                  ${balance.toLocaleString()}
-                </Text>
-              </Card>
-            </Grid.Col>
+            {/* LISTA DE ACTIVIDAD */}
+            <Grid>
+              <Grid.Col span={{ base: 12, md: 8 }}>
+                <Stack gap="md">
+                  {actividad.map((item, i) => (
+                    <Paper key={i} withBorder p="md" radius="md">
+                      <Group justify="space-between">
+                        <Stack gap={0}>
+                          <Text fw={500}>
+                            {item.tipo === "ganancia" ? "Ganancia" : "Gasto"}
+                          </Text>
+                          <Text size="sm" c="dimmed">
+                            {item.comentario || "Sin descripción"}
+                          </Text>
+                        </Stack>
 
-            {/* Días trabajados */}
-            <Grid.Col span={{ base: 12, sm: 6, md: 3 }}>
-              <Card shadow="sm" padding="lg" radius="md" withBorder>
-                <Group justify="space-between" mb="xs">
-                  <Text fw={500}>Días Trabajados</Text>
-                  <IconCalendar size={20} color="orange" />
-                </Group>
-                <Text size="xl" fw={700} style={{ color: "#fd7e14" }}>
-                  {diasTrabajados}
-                </Text>
-              </Card>
-            </Grid.Col>
-          </Grid>
+                        <Badge
+                          color={
+                            item.tipo === "ganancia" ? "green" : "red"
+                          }
+                          variant="light"
+                        >
+                          {item.fecha}
+                        </Badge>
+                      </Group>
 
-          {/* ACTIVIDAD RECIENTE */}
-          <div
-            style={{
-              borderBottom: "1px solid #dee2e6",
-              marginBottom: 30,
-            }}
-          />
-
-          <Title order={3} mb={20}>
-            Actividad Reciente
-          </Title>
-
-          <Grid>
-            <Grid.Col span={{ base: 12, md: 6 }}>
-              <Stack gap="md">
-                {actividad.map((item, i) => (
-                  <Paper key={i} withBorder p="md" radius="md">
-                    <Group justify="space-between">
-                      <Stack gap={0}>
-                        <Text fw={500}>
-                          {item.tipo === "ganancia" ? "Ganancia" : "Gasto"}
-                        </Text>
-                        <Text size="sm" c="dimmed">
-                          {item.comentario || "Sin descripción"}
-                        </Text>
-                      </Stack>
-
-                      <Badge
-                        color={item.tipo === "ganancia" ? "green" : "red"}
-                        variant="light"
+                      <Text
+                        fw={700}
+                        mt="sm"
+                        style={{
+                          color:
+                            item.tipo === "ganancia"
+                              ? "#40c057"
+                              : "#fa5252",
+                        }}
                       >
-                        {item.fecha}
-                      </Badge>
-                    </Group>
-
-                    <Text
-                      fw={700}
-                      mt="sm"
-                      style={{
-                        color:
-                          item.tipo === "ganancia" ? "#40c057" : "#fa5252",
-                      }}
-                    >
-                      {item.tipo === "ganancia" ? "+ " : "- "}
-                      ${item.valor.toLocaleString()}
-                    </Text>
-                  </Paper>
-                ))}
-              </Stack>
-            </Grid.Col>
-          </Grid>
-        </Container>
-      </AppShell.Main>
-    </AppShell>
+                        {item.tipo === "ganancia" ? "+ " : "- "}
+                        ${item.valor.toLocaleString()}
+                      </Text>
+                    </Paper>
+                  ))}
+                </Stack>
+              </Grid.Col>
+            </Grid>
+          </Container>
+      
   );
 }
