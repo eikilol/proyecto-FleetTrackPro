@@ -27,7 +27,6 @@ import {
   IconTrash,
   IconRefresh,
   IconPlus,
-  IconUser,
 } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 
@@ -43,6 +42,15 @@ interface Vehiculo {
   tecnomecanica_fecha?: string;
   created_at: string;
   observaciones?: string;
+}
+
+// Definir el tipo para las actualizaciones
+interface UpdateVehiculo {
+  estado: string;
+  observaciones: string | null;
+  soat_fecha?: string | null;
+  tecnomecanica_fecha?: string | null;
+  updated_at: string;
 }
 
 export default function VehiculosPage() {
@@ -69,7 +77,7 @@ export default function VehiculosPage() {
     try {
       setLoading(true);
       console.log("Cargando vehículos...");
-      
+
       const { data, error } = await supabase
         .from("vehiculos")
         .select("*")
@@ -82,14 +90,17 @@ export default function VehiculosPage() {
 
       console.log("Vehículos cargados:", data?.length);
       setVehiculos(data || []);
-      
-    } catch (error: any) {
-      console.error("Error completo:", error);
-      notifications.show({
-        title: "Error",
-        message: error.message || "No se pudieron cargar los vehículos",
-        color: "red",
-      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error completo:", error);
+        notifications.show({
+          title: "Error",
+          message: error.message || "No se pudieron cargar los vehículos",
+          color: "red",
+        });
+      } else {
+        console.error("Error desconocido", error);
+      }
     } finally {
       setLoading(false);
     }
@@ -120,22 +131,19 @@ export default function VehiculosPage() {
     try {
       setSaving(true);
       console.log("Guardando cambios para vehículo:", selectedVehiculo.id);
-      
+
       // Preparar datos para actualizar
-      const updates: any = {
+      const updates: UpdateVehiculo = {
         estado: editForm.estado,
         observaciones: editForm.observaciones || null,
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        soat_fecha: editForm.soat_fecha ? 
+          new Date(editForm.soat_fecha + 'T00:00:00').toISOString() : 
+          null,
+        tecnomecanica_fecha: editForm.tecnomecanica_fecha ? 
+          new Date(editForm.tecnomecanica_fecha + 'T00:00:00').toISOString() : 
+          null
       };
-
-      // Manejar fechas - convertir a null si están vacías
-      updates.soat_fecha = editForm.soat_fecha ? 
-        new Date(editForm.soat_fecha + 'T00:00:00').toISOString() : 
-        null;
-      
-      updates.tecnomecanica_fecha = editForm.tecnomecanica_fecha ? 
-        new Date(editForm.tecnomecanica_fecha + 'T00:00:00').toISOString() : 
-        null;
 
       console.log("Datos a actualizar:", updates);
 
@@ -155,7 +163,7 @@ export default function VehiculosPage() {
       }
 
       console.log("Vehículo actualizado exitosamente");
-      
+
       notifications.show({
         title: "Éxito",
         message: "Vehículo actualizado correctamente",
@@ -166,14 +174,18 @@ export default function VehiculosPage() {
       await cargarVehiculos();
       setEditModal(false);
       setSelectedVehiculo(null);
-      
-    } catch (error: any) {
-      console.error("Error al guardar:", error);
-      notifications.show({
-        title: "Error",
-        message: error.message || "No se pudo actualizar el vehículo",
-        color: "red",
-      });
+
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error al guardar:", error);
+        notifications.show({
+          title: "Error",
+          message: error.message || "No se pudo actualizar el vehículo",
+          color: "red",
+        });
+      } else {
+        console.error("Error desconocido al guardar", error);
+      }
     } finally {
       setSaving(false);
     }
@@ -181,7 +193,7 @@ export default function VehiculosPage() {
 
   // Filtrar vehículos
   const filteredVehiculos = vehiculos.filter((vehiculo) => {
-    const matchesSearch = 
+    const matchesSearch =
       vehiculo.placa.toLowerCase().includes(searchTerm.toLowerCase()) ||
       vehiculo.marca.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (vehiculo.modelo && vehiculo.modelo.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -196,7 +208,7 @@ export default function VehiculosPage() {
 
     try {
       console.log("Eliminando vehículo:", selectedVehiculo.id);
-      
+
       const { error } = await supabase
         .from("vehiculos")
         .delete()
@@ -216,14 +228,18 @@ export default function VehiculosPage() {
       await cargarVehiculos();
       setDeleteModal(false);
       setSelectedVehiculo(null);
-      
-    } catch (error: any) {
-      console.error("Error al eliminar:", error);
-      notifications.show({
-        title: "Error",
-        message: error.message || "No se pudo eliminar el vehículo",
-        color: "red",
-      });
+
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error al eliminar:", error);
+        notifications.show({
+          title: "Error",
+          message: error.message || "No se pudo eliminar el vehículo",
+          color: "red",
+        });
+      } else {
+        console.error("Error desconocido al eliminar", error);
+      }
     }
   };
 
@@ -458,7 +474,7 @@ export default function VehiculosPage() {
             Disponibles
           </Text>
           <Text size="xl" fw={700} c="green">
-            {vehiculos.filter(v => v.estado === "disponible").length}
+            {vehiculos.filter((v) => v.estado === "disponible").length}
           </Text>
         </Card>
         <Card withBorder p="md" radius="md" style={{ flex: 1 }}>
@@ -466,7 +482,7 @@ export default function VehiculosPage() {
             En servicio
           </Text>
           <Text size="xl" fw={700} c="blue">
-            {vehiculos.filter(v => v.estado === "ocupado").length}
+            {vehiculos.filter((v) => v.estado === "ocupado").length}
           </Text>
         </Card>
         <Card withBorder p="md" radius="md" style={{ flex: 1 }}>
@@ -474,7 +490,7 @@ export default function VehiculosPage() {
             En mantenimiento
           </Text>
           <Text size="xl" fw={700} c="orange">
-            {vehiculos.filter(v => v.estado === "mantenimiento").length}
+            {vehiculos.filter((v) => v.estado === "mantenimiento").length}
           </Text>
         </Card>
       </Group>
@@ -519,7 +535,7 @@ export default function VehiculosPage() {
             onChange={(e) => setEditForm({ ...editForm, observaciones: e.target.value })}
             rows={3}
           />
-          
+
           <Group justify="flex-end" mt="md">
             <Button variant="light" onClick={() => setEditModal(false)}>
               Cancelar

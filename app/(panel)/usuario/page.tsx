@@ -20,7 +20,7 @@ import {
   IconActivity,
 } from "@tabler/icons-react";
 
-import { useDisclosure } from "@mantine/hooks";
+
 import { supabase } from "@/supabase/client";
 
 // ---------- TIPO PARA ACTIVIDAD ----------
@@ -32,7 +32,7 @@ type ActividadItem = {
 };
 
 export default function DashboardPage() {
-  const [opened, { toggle }] = useDisclosure();
+  
 
   // ESTADOS
   const [gananciasMes, setGananciasMes] = useState(0);

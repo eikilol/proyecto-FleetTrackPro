@@ -1,7 +1,7 @@
 'use client';
 
 import { AppShell, Burger, NavLink, Stack, Group, Title } from "@mantine/core";
-import { IconTrendingUp, IconTrendingDown, IconReport, IconDashboard } from "@tabler/icons-react";
+import { IconTrendingUp, IconTrendingDown,  IconDashboard } from "@tabler/icons-react";
 import { useDisclosure } from '@mantine/hooks';
 
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
