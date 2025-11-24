@@ -1,11 +1,19 @@
 'use client';
 
-import { AppShell, Burger, NavLink, Stack, Group, Title } from "@mantine/core";
-import { IconTrendingUp, IconTrendingDown, IconReport, IconDashboard } from "@tabler/icons-react";
+import { AppShell, Burger, NavLink, Stack, Group, Title, Button } from "@mantine/core";
+import { IconTrendingUp, IconTrendingDown, IconReport, IconDashboard, IconLogout } from "@tabler/icons-react";
 import { useDisclosure } from '@mantine/hooks';
 
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
+
+  const handleLogout = () => {
+    // Aquí puedes agregar la lógica para cerrar sesión
+    console.log("Cerrando sesión...");
+    // Por ejemplo: 
+    // await supabase.auth.signOut();
+    // router.push('/login');
+  };
 
   return (
     <AppShell
@@ -26,6 +34,17 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
               FleetTrackPro
             </Title>
           </Group>
+          
+          {/* Botón Salir a la derecha */}
+          <Button 
+            variant="light" 
+            color="red" 
+            leftSection={<IconLogout size={16} />}
+            onClick={handleLogout}
+            size="sm"
+          >
+            Salir
+          </Button>
         </Group>
       </AppShell.Header>
 
@@ -55,18 +74,14 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
             href="/vehiculos/asignar"
             component="a"
           />
-         <NavLink
+          
+          <NavLink
             label="lista "
             description="asignar"
             leftSection={<IconTrendingDown size={20} stroke={1.5} />}
             href="/vehiculos"
             component="a"
           />
-             
-          
-         
-
-         
         </Stack>
       </AppShell.Navbar>
 
