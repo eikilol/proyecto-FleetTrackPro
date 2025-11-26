@@ -17,7 +17,6 @@ import { useRouter } from "next/navigation";
 
 export default function RegistrarGasto() {
   const router = useRouter();
-
   const [fecha, setFecha] = useState("");
   const [tipo, setTipo] = useState<string | null>(null);
   const [valor, setValor] = useState("");
@@ -61,11 +60,13 @@ export default function RegistrarGasto() {
   }
 
   return (
-    <Container size="sm" mt={40}>
+    
+    <Container size="sm" mt={40} color="custom" >
       <Title order={2} mb={20}>Nuevo Gasto o Evento</Title>
 
       <Paper shadow="xs" radius="md" p="lg">
-
+        
+ <Button color="custom">Ocean blue button</Button>
         {/* Fecha */}
         <TextInput
           type="date"
@@ -128,5 +129,6 @@ export default function RegistrarGasto() {
 
       </Paper>
     </Container>
+   
   );
 }

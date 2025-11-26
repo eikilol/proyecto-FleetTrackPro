@@ -21,12 +21,12 @@ import { useRouter } from "next/navigation";
 import { 
   IconCar, 
   IconCheck, 
-  IconArrowLeft,
+ 
   IconCalendar,
   IconDeviceFloppy
 } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
-import Link from "next/link";
+
 
 // Definir interfaz para el formulario
 interface VehiculoForm {
@@ -95,7 +95,7 @@ export default function CrearVehiculoPage() {
 
       // Redirigir después de un breve delay
       setTimeout(() => {
-        router.push("/admin/vehiculos");
+        router.push("/admin");
       }, 1500);
 
     } catch (error: unknown) {
@@ -117,15 +117,7 @@ export default function CrearVehiculoPage() {
       {/* Header */}
       <Group justify="space-between" mb="xl">
         <div>
-          <Button
-            variant="light"
-            leftSection={<IconArrowLeft size={16} />}
-            component={Link}
-            href="/admin/vehiculos"
-            mb="sm"
-          >
-            Volver a Vehículos
-          </Button>
+         
           <Title order={2} style={{ color: "#2C2E33" }}>
             Registrar Nuevo Vehículo
           </Title>
@@ -312,17 +304,7 @@ export default function CrearVehiculoPage() {
               </Stack>
             </Card>
 
-            <Card withBorder shadow="sm" radius="md">
-              <Card.Section withBorder p="lg" bg="blue.0">
-                <Text fw={600}>Requisitos</Text>
-              </Card.Section>
-              <Stack p="lg" gap="xs">
-                <Text size="sm">• Placa y marca son obligatorios</Text>
-                <Text size="sm">• Modelo y año son opcionales</Text>
-                <Text size="sm">• El año debe ser válido</Text>
-                <Text size="sm">• Documentos pueden agregarse después</Text>
-              </Stack>
-            </Card>
+            
           </Stack>
         </Grid.Col>
       </Grid>

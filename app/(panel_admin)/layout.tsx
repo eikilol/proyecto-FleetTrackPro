@@ -5,6 +5,7 @@ import { IconTrendingUp, IconTrendingDown, IconDashboard, IconLogout } from "@ta
 import { useDisclosure } from '@mantine/hooks';
 import { supabase } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
+import styles from './layout.module.css'
 
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
@@ -33,6 +34,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
     >
       {/* HEADER */}
       <AppShell.Header>
+        
         <Group h="100%" px="md" justify="space-between">
           <Group>
             <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
@@ -92,7 +94,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
       </AppShell.Navbar>
 
       {/* CONTENIDO */}
-      <AppShell.Main>
+      <AppShell.Main className={styles.admin}>
         {children}
       </AppShell.Main>
     </AppShell>

@@ -306,7 +306,7 @@ export default function VehiculosPage() {
           <Button
             leftSection={<IconPlus size={16} />}
             component="a"
-            href="/admin/vehiculos/crear"
+            href="/vehiculos/crear"
           >
             Agregar Vehículo
           </Button>

@@ -28,7 +28,7 @@ await new Promise((resolve) => setTimeout(resolve, 1000));
       return;
     }
 
-    console.log("✅ Usuario autenticado:", user.email);
+    console.log(" Usuario autenticado:", user.email);
     setStatus("Usuario autenticado. Verificando perfil...");
 
     // 3. Consultar o crear perfil (corrección aquí)
@@ -43,7 +43,7 @@ await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // Si no existe el perfil, crearlo
     if (profileError || !profile) {
-      console.log("📝 Creando perfil para:", user.email);
+      console.log(" Creando perfil para:", user.email);
       setStatus("Creando perfil...");
 
       const { data: newProfile, error: insertError } = await supabase
@@ -63,7 +63,7 @@ await new Promise((resolve) => setTimeout(resolve, 1000));
         .single();
 
       if (insertError) {
-        console.error("❌ Error al crear perfil:", insertError);
+        console.error(" Error al crear perfil:", insertError);
         setStatus(
           "Error al crear perfil. Redirigiendo a selección de rol..."
         );
@@ -76,7 +76,7 @@ await new Promise((resolve) => setTimeout(resolve, 1000));
       profile = newProfile;
     }
 
-    console.log("✅ Perfil encontrado:", profile);
+    console.log(" Perfil encontrado:", profile);
 
     // 4. Redirigir según el rol
     setStatus("Redirigiendo...");
@@ -94,7 +94,7 @@ await new Promise((resolve) => setTimeout(resolve, 1000));
       window.location.href = "/seleccionar-rol";
     }
   } catch (error) {
-    console.error("❌ Error inesperado:", error);
+    console.error(" Error inesperado:", error);
     setStatus("Error inesperado. Redirigiendo al login...");
     setTimeout(() => {
       window.location.href = "/login";

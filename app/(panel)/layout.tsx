@@ -6,10 +6,11 @@ import { useDisclosure } from '@mantine/hooks';
 import { supabase } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
 
+import styles from './layout.module.css'
+
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
   const [opened, { toggle }] = useDisclosure();
   const router = useRouter();
-
   const handleLogout = async () => {
     try {
       // Cerrar sesión en Supabase
@@ -40,11 +41,11 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
               FleetTrackPro
             </Title>
           </Group>
-          
+
           {/* Botón Salir a la derecha */}
-          <Button 
-            variant="light" 
-            color="red" 
+          <Button
+            variant="light"
+            color="red"
             leftSection={<IconLogout size={16} />}
             onClick={handleLogout}
             size="sm"
@@ -84,8 +85,10 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
       </AppShell.Navbar>
 
       {/* CONTENIDO */}
-      <AppShell.Main>
+      <AppShell.Main className={styles.main}>
+
         {children}
+
       </AppShell.Main>
     </AppShell>
   );
